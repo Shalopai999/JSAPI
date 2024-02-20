@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BOM Задачи</title>
+</head>
+<body>
+    <a href="1_2.html">Перейти на другую страницу 2</a>
+    
+    <section class="task">
+        <h1>Определение текущего размера окна браузера</h1>
+        <p>Ширина окна: <span class="window-size" id="width"></span> px</p>
+        <p>Высота окна: <span class="window-size" id="height"></span> px</p>
+    </section>
+
+    <section class="task">
+        <h1>Подтверждение закрытия страницы</h1>
+        <p>Это страница с подтверждением закрытия.</p>
+    </section>
+
+    <section class="task">
+        <h1>Управление историей переходов</h1>
+        <button class="history-button" id="goBack">Назад</button>
+        <button class="history-button" id="goForward">Вперед</button>
+    </section>
+
+    <script>
+        // Определение текущего размера окна браузера
+        const updateWindowSize = () => {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+
+            const windowSizeElements = document.querySelectorAll(".window-size");
+            windowSizeElements.forEach(element => {
+                element.textContent = width;
+            });
+        };
+
+        // Вызываем функцию при загрузке страницы и при изменении размера окна
+        window.addEventListener("load", updateWindowSize);
+        window.addEventListener("resize", updateWindowSize);
+
+        // Подтверждение закрытия страницы
+        window.addEventListener("beforeunload", e => {
+            e.preventDefault();
+            e.returnValue = '';
+        });
+
+        // Управление историей переходов
+        const goBackButton = document.getElementById("goBack");
+        const goForwardButton = document.getElementById("goForward");
+
+        goBackButton.addEventListener("click", () => {
+            window.history.back();
+        });
+
+        goForwardButton.addEventListener("click", () => {
+            window.history.forward();
+        });
+    </script>
+</body>
+</html>

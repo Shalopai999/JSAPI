@@ -1,0 +1,111 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список статей</title>
+
+    <!-- Подключаем Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Список статей</h1>
+        <ul class="list-group" id="articleList">
+            <!-- Здесь будут отображаться статьи -->
+        </ul>
+        <button class="btn btn-primary mt-3" id="addArticle">Добавить статью</button>
+    </div>
+
+    <!-- Подключаем Bootstrap JavaScript (необходим для всплывающих окон) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const articleList = document.getElementById('articleList');
+        const addArticleButton = document.getElementById('addArticle');
+
+        // JSON-данные со списком статей
+        const articlesData = [
+            {
+                title: 'Заголовок статьи 1',
+                content: 'Содержание статьи 1'
+            },
+            {
+                title: 'Заголовок статьи 2',
+                content: 'Содержание статьи 2'
+            }
+        ];
+
+        // Загрузка статей из JSON-данных
+        articlesData.forEach(articleData => {
+            const articleItem = createArticleElement(articleData.title, articleData.content);
+            articleList.appendChild(articleItem);
+        });
+
+        // Создание элемента статьи
+        function createArticleElement(title, content) {
+            const articleItem = document.createElement('li');
+            articleItem.classList.add('list-group-item');
+
+            const articleTitle = document.createElement('h2');
+            articleTitle.classList.add('mb-3');
+            articleTitle.textContent = title;
+
+            const articleContent = document.createElement('p');
+            articleContent.textContent = content;
+
+            const editButton = document.createElement('button');
+            editButton.classList.add('btn', 'btn-warning', 'me-2');
+            editButton.textContent = 'Редактировать';
+
+            const deleteButton = document.createElement('button');
+            deleteButton.classList.add('btn', 'btn-danger');
+            deleteButton.textContent = 'Удалить';
+
+            articleItem.appendChild(articleTitle);
+            articleItem.appendChild(articleContent);
+            articleItem.appendChild(editButton);
+            articleItem.appendChild(deleteButton);
+
+            return articleItem;
+        }
+
+        // Добавление новой статьи
+        addArticleButton.addEventListener('click', () => {
+            const newArticle = {
+                title: 'Новая статья',
+                content: 'Введите содержание статьи...'
+            };
+            const articleItem = createArticleElement(newArticle.title, newArticle.content);
+            articleList.appendChild(articleItem);
+        });
+
+        // Обработчик событий для удаления и редактирования статей
+        articleList.addEventListener('click', event => {
+            if (event.target.textContent === 'Удалить') {
+                const articleItem = event.target.closest('li');
+                articleItem.remove();
+            }
+
+            if (event.target.textContent === 'Редактировать') {
+                const articleItem = event.target.closest('li');
+                const articleTitle = articleItem.querySelector('h2');
+                const articleContent = articleItem.querySelector('p');
+
+                // Позволяет пользователю редактировать заголовок и содержание статьи
+                const newTitle = prompt('Введите новый заголовок:', articleTitle.textContent);
+                const newContent = prompt('Введите новое содержание:', articleContent.textContent);
+
+                if (newTitle !== null && newContent !== null) {
+                    articleTitle.textContent = newTitle;
+                    articleContent.textContent = newContent;
+                }
+            }
+        });
+    </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+</body>
+</html>

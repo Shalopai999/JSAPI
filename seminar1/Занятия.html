@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Спортивный клуб</title>
+
+    <!-- Подключаем Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <div class="container mt-5">
+      <h1 class="mb-4">Расписание занятий</h1>
+      <ul class="list-group" id="articleList">
+        <!-- Здесь будут отображаться занятия -->
+      </ul>
+      <button class="btn btn-primary mt-3" id="addArticle">
+        Добавить занятие
+      </button>
+    </div>
+
+    <!-- Подключаем Bootstrap JavaScript (необходим для всплывающих окон) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      const articleList = document.getElementById("articleList");
+      const addArticleButton = document.getElementById("addArticle");
+
+      // JSON-данные со списком занятий
+      const articlesData = [
+        {
+          title: "Занятие",
+          time: "Время занятия",
+          maxValue: "Максимальное количество участников",
+          value: "Текущее количество участников",
+        },
+        {
+          title: "Занятие",
+          time: "Время занятия",
+          maxValue: "Максимальное количество участников",
+          value: "Текущее количество участников",
+        },
+      ];
+
+      // Загрузка статей из JSON-данных
+      articlesData.forEach((articleData) => {
+        const articleItem = createArticleElement(
+          articleData.title,
+          articleData.time,
+          articleData.maxValue,
+          articleData.value
+        );
+        articleList.appendChild(articleItem);
+      });
+
+      // Создание элемента занятия
+      function createArticleElement(title, time, maxValue, value) {
+        const articleItem = document.createElement("li");
+        articleItem.classList.add("list-group-item");
+
+        const articleTitle = document.createElement("h2");
+        articleTitle.classList.add("mb-3");
+        articleTitle.textContent = title;
+
+        const articleTime = document.createElement("h4");
+        articleTime.textContent = time;
+
+        const articleMaxValue = document.createElement("p");
+        articleMaxValue.textContent = maxValue;
+
+        const articleValue = document.createElement("h5");
+        articleValue.textContent = value;
+
+        const addButton = document.createElement("button");
+        addButton.classList.add("btn", "btn-warning", "me-2");
+        addButton.textContent = "Записаться";
+
+        const editButton = document.createElement("button");
+        editButton.classList.add("btn", "btn-warning", "me-2");
+        editButton.textContent = "Редактировать";
+
+        const deleteButton = document.createElement("button");
+        deleteButton.classList.add("btn", "btn-danger");
+        deleteButton.textContent = "Удалить";
+
+        articleItem.appendChild(articleTitle);
+        articleItem.appendChild(articleTime);
+        articleItem.appendChild(articleMaxValue);
+        articleItem.appendChild(articleValue);
+        articleItem.appendChild(addButton);
+        articleItem.appendChild(editButton);
+        articleItem.appendChild(deleteButton);
+
+        return articleItem;
+      }
+
+      // Добавление нового занятия
+      addArticleButton.addEventListener("click", () => {
+        const newArticle = {
+          title: "Новое занятие",
+          time: "Время занятия",
+          maxValue: "Максимальное количество участников",
+          value: "Текущее количество участников",
+        };
+        const articleItem = createArticleElement(
+          newArticle.title,
+          newArticle.time,
+          newArticle.maxValue,
+          newArticle.value
+        );
+        articleList.appendChild(articleItem);
+      });
+
+      // Обработчик событий для удаления и редактирования занятий
+      articleList.addEventListener("click", (event) => {
+
+        if (event.target.textContent === "Записаться") {
+            const articleItem = event.target.closest("li");
+            const articleValue = articleItem.querySelector("h5");
+            articleValue.textContent = articleValue.textContent + 1;
+        }
+
+        if (event.target.textContent === "Удалить") {
+          const articleItem = event.target.closest("li");
+          articleItem.remove();
+        }
+
+        if (event.target.textContent === "Редактировать") {
+          const articleItem = event.target.closest("li");
+          const articleTitle = articleItem.querySelector("h2");
+          const articleTime = articleItem.querySelector("h4");
+          const articleMaxValue = articleItem.querySelector("p");
+          const articleValue = articleItem.querySelector("h5");
+
+
+          // Позволяет пользователю редактировать название занятия и время
+          const newTitle = prompt(
+            "Введите название занятия:",
+            articleTitle.textContent
+          );
+          const newTime = prompt(
+            "Введите время занятия:",
+            articleTime.textContent
+          );
+          const newMaxValue = prompt(
+            "Введите максимальное количество участников:",
+            articleMaxValue.textContent
+          );
+          const newValue = prompt(
+            "Введите текущее количество участников:",
+            articleValue.textContent
+          );
+
+          if (newTitle !== null && newTime !== null && newMaxValue !== null && newValue !== null) {
+            articleTitle.textContent = newTitle;
+            articleTime.textContent = newTime;
+            articleMaxValue.textContent = 'Максимальное количество участников: ' + newMaxValue;
+            articleValue.textContent = 'Текущее значение участников: ' + newValue;
+          }
+        }
+      });
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
